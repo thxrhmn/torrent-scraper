@@ -2,16 +2,59 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+	"strconv"
 	"time"
+	dto "torrent-scraper/dto/result"
 	"torrent-scraper/models"
 	"torrent-scraper/pkg"
 
 	"github.com/gocolly/colly/v2"
+	"github.com/gofiber/fiber/v2"
 	"github.com/schollz/progressbar/v3"
 )
 
-func BitSearch(keyword string, totalPage int) {
+// GetBitsearch godoc
+// @Summary Get list bitsearch
+// @Description Get list bitsearch
+// @Tags bitsearch
+// @Param startpage query int false "Start page" Default(1)
+// @Param endpage query int false "End page" Default(2)
+// @Param keyword query string true "Search torrent list by keyword" Default(adobe)
+// @Accept json
+// @Produce json
+// @Success 200 {object} dto.SuccessResult
+// @Failure 500 {object} dto.ErrorResult
+// @Router /bitsearch [get]
+func BitSearch(ctx *fiber.Ctx) error {
 	startTime := time.Now()
+
+	// QUERY PARAMETERS
+	// keyword required
+	// startpage optional (default = 1)
+	// endpage optional (default = 2)
+
+	qkeyword := ctx.Query("keyword")
+	qstartPage := ctx.Query("startpage")
+	qendPage := ctx.Query("endpage")
+
+	if qkeyword == "" {
+		return ctx.JSON(dto.ErrorResult{Status: http.StatusBadRequest, Message: "field keyword is required!"})
+	}
+
+	var startPage int
+	if qstartPage == "" {
+		startPage = 1
+	} else {
+		startPage, _ = strconv.Atoi(qstartPage)
+	}
+
+	var endPage int
+	if qendPage == "" {
+		endPage = 2
+	} else {
+		endPage, _ = strconv.Atoi(qendPage)
+	}
 
 	c := colly.NewCollector()
 
@@ -43,10 +86,10 @@ func BitSearch(keyword string, totalPage int) {
 
 	})
 
-	bar := progressbar.Default(int64(totalPage))
+	bar := progressbar.Default(int64(endPage))
 
-	for page := 0; page < totalPage; page++ {
-		url := fmt.Sprintf("https://bitsearch.to/search?q=%s&page=%d", keyword, page)
+	for page := startPage; page <= endPage; page++ {
+		url := fmt.Sprintf("https://bitsearch.to/search?q=%s&page=%d", qkeyword, page)
 		c.Visit(url)
 		bar.Add(page)
 	}
@@ -58,4 +101,6 @@ func BitSearch(keyword string, totalPage int) {
 
 	elapsedTime := time.Since(startTime)
 	fmt.Printf("Waktu eksekusi: %s\n", elapsedTime)
+
+	return ctx.JSON(dto.SuccessResult{Status: http.StatusOK, Data: posts})
 }

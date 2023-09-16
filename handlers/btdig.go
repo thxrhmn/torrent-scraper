@@ -15,6 +15,19 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
+// GetBtdig godoc
+// @Summary Get list btdig
+// @Description Get list btdig
+// @Tags btdig
+// @Param startpage query int false "Start page" Default(1)
+// @Param endpage query int false "End page" Default(2)
+// @Param keyword query string true "Search torrent list by keyword" Default(udemy)
+// @Param order query string false "Search by order" Enums(relevance,age,size,files) Default(relevance)
+// @Accept json
+// @Produce json
+// @Success 200 {object} dto.SuccessResult
+// @Failure 500 {object} dto.ErrorResult
+// @Router /btdig [get]
 func BtDIg(ctx *fiber.Ctx) error {
 	startTime := time.Now()
 
@@ -59,7 +72,7 @@ func BtDIg(ctx *fiber.Ctx) error {
 	}
 
 	if keyword == "" {
-		return ctx.Status(http.StatusBadRequest).JSON(dto.ErrorResult{Status: http.StatusBadRequest, Message: "please fill the keyword"})
+		return ctx.JSON(dto.ErrorResult{Status: http.StatusBadRequest, Message: "field keyword is required!"})
 	}
 
 	c := colly.NewCollector()

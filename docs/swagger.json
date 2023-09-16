@@ -1,0 +1,157 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Torrent Scraper API server.",
+        "title": "Torrent Scraper API",
+        "contact": {
+            "name": "API Support",
+            "url": "http://github.com/thxrhmn/torrent-scraper"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "paths": {
+        "/bitsearch": {
+            "get": {
+                "description": "Get list bitsearch",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bitsearch"
+                ],
+                "summary": "Get list bitsearch",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Start page",
+                        "name": "startpage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 2,
+                        "description": "End page",
+                        "name": "endpage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "adobe",
+                        "description": "Search torrent list by keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.SuccessResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/btdig": {
+            "get": {
+                "description": "Get list btdig",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "btdig"
+                ],
+                "summary": "Get list btdig",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Start page",
+                        "name": "startpage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 2,
+                        "description": "End page",
+                        "name": "endpage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "udemy",
+                        "description": "Search torrent list by keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "relevance",
+                            "age",
+                            "size",
+                            "files"
+                        ],
+                        "type": "string",
+                        "default": "relevance",
+                        "description": "Search by order",
+                        "name": "order",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.SuccessResult"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResult"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.ErrorResult": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.SuccessResult": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "status": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,107 @@
+basePath: /api/v1
+definitions:
+  dto.ErrorResult:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  dto.SuccessResult:
+    properties:
+      data: {}
+      status:
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact:
+    name: API Support
+    url: http://github.com/thxrhmn/torrent-scraper
+  description: This is a Torrent Scraper API server.
+  title: Torrent Scraper API
+  version: "1.0"
+paths:
+  /bitsearch:
+    get:
+      consumes:
+      - application/json
+      description: Get list bitsearch
+      parameters:
+      - default: 1
+        description: Start page
+        in: query
+        name: startpage
+        type: integer
+      - default: 2
+        description: End page
+        in: query
+        name: endpage
+        type: integer
+      - default: adobe
+        description: Search torrent list by keyword
+        in: query
+        name: keyword
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SuccessResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResult'
+      summary: Get list bitsearch
+      tags:
+      - bitsearch
+  /btdig:
+    get:
+      consumes:
+      - application/json
+      description: Get list btdig
+      parameters:
+      - default: 1
+        description: Start page
+        in: query
+        name: startpage
+        type: integer
+      - default: 2
+        description: End page
+        in: query
+        name: endpage
+        type: integer
+      - default: udemy
+        description: Search torrent list by keyword
+        in: query
+        name: keyword
+        required: true
+        type: string
+      - default: relevance
+        description: Search by order
+        enum:
+        - relevance
+        - age
+        - size
+        - files
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SuccessResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResult'
+      summary: Get list btdig
+      tags:
+      - btdig
+swagger: "2.0"
