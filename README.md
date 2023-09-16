@@ -28,7 +28,7 @@ go run main.go
 
 ## API Documentation
 
-### Endpoint: /api/v1/btdig
+### `1. Endpoint: /api/v1/btdig`
 
 ### Description
 This endpoint is used to retrieve a list of torrent from the BTDIG.
@@ -84,3 +84,6 @@ GET /api/v1/btdig?keyword=Udemy&startpage=1&endpage=3&order=age
     ]
 }
 ```
+### `2. SWAGGER`
+http://localhost:3000/swagger/
+![The San Juan Mountains are beautiful!](swagger.png)
