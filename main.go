@@ -10,6 +10,7 @@ import (
 	_ "torrent-scraper/docs"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/swagger"
 )
 
@@ -29,6 +30,16 @@ func main() {
 
 	app := fiber.New()
 
+	// Initialize default config
+	app.Use(cors.New())
+
+	// Or extend your config for customization
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowMethods: "*",
+	}))
+
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -36,9 +47,12 @@ func main() {
 		return c.JSON(dto.SuccessResult{Status: http.StatusOK, Data: data})
 	})
 
+	app.Static("/files", "./results")
+
 	v1 := app.Group("/api/v1")
 	v1.Get("/btdig", handlers.BtDIg)
 	v1.Get("/bitsearch", handlers.BitSearch)
+	v1.Get("/files", handlers.GetFiles)
 
 	fmt.Println("Server listening on port:", port)
 
