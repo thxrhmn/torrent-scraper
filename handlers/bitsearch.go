@@ -99,6 +99,8 @@ func BitSearch(ctx *fiber.Ctx) error {
 	headers := []string{"Date", "Title", "Size", "Seeder", "Leecher", "Downloader", "Link", "Torrent Link", "Magnet URL"}
 	pkg.SaveToCSV(posts, "bitsearch_scrape.csv", headers)
 
+	pkg.GetFileResults()
+
 	elapsedTime := time.Since(startTime)
 	fmt.Printf("Waktu eksekusi: %s\n", elapsedTime)
 
