@@ -19,7 +19,7 @@ import (
 // @description     This is a Torrent Scraper API server.
 // @contact.name    API Support
 // @contact.url     http://github.com/thxrhmn/torrent-scraper
-// @host            localhost:3000
+// @host            127.0.0.1:8080
 // @BasePath        /api/v1
 
 func main() {
